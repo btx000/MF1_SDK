@@ -4,9 +4,6 @@
 [submodule "tools/flash/kflash_py"]
 	path = tools/flash/kflash_py
 	url = https://github.com/sipeed/kflash.py.git
-[submodule "components/kendryte_sdk/kendryte-standalone-sdk"]
-	path = components/kendryte_sdk/kendryte-standalone-sdk
-	url = https://github.com/kendryte/kendryte-standalone-sdk.git
 [submodule "components/utils/list"]
 	path = components/utils/list
 	url = https://github.com/clibs/list.git
