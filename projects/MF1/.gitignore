@@ -1,7 +1,0 @@
-
-
-build
-.config.mk
-.flash.conf.json
-
-!/main/face_lib/lib/*.a
