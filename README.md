@@ -1,11 +1,8 @@
-MF1_SDK
+MF1_SDK_PlatformIO_Project
 ==========
 
-SDK for Sipeed MF1 AI module
-
-<a href="https://travis-ci.org/sipeed/MF1_SDK">
-    <img src="https://travis-ci.org/sipeed/MF1_SDK.svg?branch=dev" alt="Master branch build status" />
-</a>
+SDK for Sipeed MF1 AI module. This project modify from [https://github.com/sipeed/MF1_SDK](https://github.com/sipeed/MF1_SDK)
+If you are using Linux, choosing the original project is better. 
 
 ## Pre Built Firmware
 
@@ -36,158 +33,58 @@ git submodule update --init --recursive path_to_submodule
 
 ## Install dependencies
 
-Ubuntu for example:
+### Install Python3
+
+Download python3 from [here](https://www.python.org/ftp/python/3.7.4/python-3.7.4-amd64.exe)
+
+Use defult install and add python to `PATH`.
+
+### Install Virtual Environment
+
+Pip install virtualenv
 
 ```
-sudo apt update
-sudo apt install python3 python3-pip build-essential cmake
-sudo pip3 install -r requirements.txt
-
+pip install virtualenv
 ```
-> recommend `python3` instead of python2
+### Install VScode and PlatformIO
 
-Check `CMake` version by 
-
-```
-cmake --version
-```
-
-The `cmake` version should be at least `v3.9`, if not, please install latest `cmake` manually from [cmake website](https://cmake.org/download/)
-
-
-
-
-## Download toolchain
-
-Download the latest toolchain from [here](https://github.com/kendryte/kendryte-gnu-toolchain/releases), or [kendryte-toolchain-ubuntu-amd64-8.2.0-20190409.tar.xz(CDN)](http://dl.cdn.sipeed.com/kendryte-toolchain-ubuntu-amd64-8.2.0-20190409.tar.xz)
-
-And extract to `/opt/kendryte-toolchain/`
-
-For example:
-
-```
-wget http://dl.cdn.sipeed.com/kendryte-toolchain-ubuntu-amd64-8.2.0-20190409.tar.xz
-sudo tar -Jxvf kendryte-toolchain-ubuntu-amd64-8.2.0-20190409.tar.xz -C /opt
-ls /opt/kendryte-toolchain/bin
-```
+There is a install guide.[http://blog.sipeed.com/p/622.html](http://blog.sipeed.com/p/622.html)
 
 ## Configure project
 
-* Switch path to `hello_world` project director
+Open this project directory with vscode.
+
+You can modify some compile and download options by modifying `platformio.ini`, modify `include/global_config.h` to configure development board macro definitions.
+
+* platformio.ini
+
+```ini
+[env:sipeed-mf1]
+platform = kendryte210             
+platform_packages = framework-kendryte-standalone-sdk @ https://github.com/kendryte/kendryte-standalone-sdk.git  ;This option keeps sdk up to date.
+framework = kendryte-standalone-sdk
+board = sipeed-MF1                
+monitor_speed = 115200
+upload_port = COM18       ;Choose the correct download port
+build_flags = -l_face_dual_hor -L./src/face_lib/lib   ;Select the corresponding function library according to the hardware device.
+extra_scripts = 
+  pre:pre_build.py                                    ;Custom build script
 
 ```
-cd MF1_SDK
-cd projects/hello_world
-```
 
-or MF1 project
-
-```
-cd MF1_SDK
-cd projects/MF1
-```
-
-* Configure toolchain path
-
-The default toolchain path is `/opt/kendryte-toolchain/bin`,
-and default toolchain pfrefix is `riscv64-unknown-elf-`.
-
-If you have copied toolchain to `/opt`, just use default.
-
-Or you can customsize your toolchain path by 
-
-```
-python3 project.py --toolchain /opt/kendryte-toolchain/bin --toolchain-prefix riscv64-unknown-elf- config 
-```
-
-And clean config to default by command
-
-```
-python3 project.py clean_conf
-```
-
-* Configure project
-
-Usually, just use the default configuration.
-
-If you want to customsize project modules, execute command:
-
-```
-python3 project.py menuconfig
-```
-
-This command will display a configure panel with GUI,
-then change settings and save configuration.
+If you want to add custom compilation steps, you can modify `pre_build.py`. More usage can refer to the [documentation](https://docs.platformio.org/en/latest/projectconf/advanced_scripting.html)
 
 ## Build
 
-```
-python3 project.py build
-```
-
-And clean project by:
-
-```
-python3 project.py clean
-```
-
-Clean all build files by:
-
-```
-python3 project.py distclean
-```
-
-The make system is generated from `cmake`, 
-you **MUST** run
-
-```
-python3 project.py rebuild
-```
-
-to rebuild make system after you **add/delete** source files or edit kconfig files
-
-
-
+Compiling with platformio is very simple, you just click the compile button
 
 ## Flash (Burn) to board
 
-
-For example, you have one `Maix Go` board:
-
-```
-python3 project.py -B goE -p /dev/ttyUSB1 -b 1500000 flash
-```
-
-For `Maixduino` board:
-
-```
-python3 project.py -B maixduino -p /dev/ttyUSB0 -b 1500000 -S flash
-```
-
-`-B` means board, `-p` means board serial device port, `-b` means baudrate, `-S` or `--Slow` means download at low speed but more stable mode.
-
-the configuration saved in `.flash_conf.json` except args: `--sram`(`-s`)、`--terminal`(`-t`)、`--Slow`(`-S`)
-You don't need to confiure again the next time you burn firmware, just use:
-```
-python3 project.py flash
-```
-or 
-```
-python3 project.py -S flash
-```
-
-
-More parameters help by :
-
-```
-python3 project.py --help
-```
-
+Flash is simple as build, just click upload button.
 
 ## Others
 
-* Build system: refer to [c_cpp_project_framework](https://github.com/Neutree/c_cpp_project_framework)
-
+See [https://docs.platformio.org/en/latest/](https://docs.platformio.org/en/latest/)
 
 
 
