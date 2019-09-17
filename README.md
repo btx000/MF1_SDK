@@ -46,6 +46,9 @@ Pip install virtualenv
 ```
 pip install virtualenv
 ```
+
+More info about pio virtualenv. [https://docs.platformio.org/en/latest/installation.html?highlight=virtualenv#virtual-environment](https://docs.platformio.org/en/latest/installation.html?highlight=virtualenv#virtual-environment)
+
 ### Install VScode and PlatformIO
 
 There is a install guide.[http://blog.sipeed.com/p/622.html](http://blog.sipeed.com/p/622.html)
